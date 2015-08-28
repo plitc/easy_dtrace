@@ -70,15 +70,36 @@ cleanup(){
 #
 #// function: pkg installation
 pkginstall(){
+   #/ check package
    CHECKPKG=$(pkg info | grep -c "$@")
    if [ "$CHECKPKG" = "0" ]
    then
-      : # dummy
-      echo no
-      echo "$@"
+      #/ check ports
+      CHECKPORTS=$(find /usr/ports -name "$@" | grep -c "$@")
+      if [ "$CHECKPORTS" = "0" ]
+      then
+         pkg update
+         pkg install -y "$@"
+         if [ $? -eq 0 ]
+         then
+            : # dummy
+         else
+            echo "[ERROR] something goes wrong, can't install the package"
+            exit 1
+         fi
+      else
+         GETPATH=$(find /usr/ports -maxdepth 2 -mindepth 2 -name "$@" | tail -n 1)
+         cd "$GETPATH" && make install clean
+         if [ $? -eq 0 ]
+         then
+            : # dummy
+         else
+            echo "[ERROR] something goes wrong, can't install the package"
+            exit 1
+         fi
+      fi
    else
-      echo yes
-      echo "$@"
+      : # dummy
       exit 0
    fi
 }
