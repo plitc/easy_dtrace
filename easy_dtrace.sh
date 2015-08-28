@@ -144,10 +144,10 @@ fi
 ### ### ### ### ### ### ### ### ###
 
 #/ pkg install: ksh93
-pkginstall ksh93
+(pkginstall ksh93) & spinner $!
 
 #/ pkg install: DTraceToolkit
-pkginstall DTraceToolkit
+(pkginstall DTraceToolkit) & spinner $!
 
 ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ###
