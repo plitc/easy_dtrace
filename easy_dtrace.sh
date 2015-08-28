@@ -83,8 +83,6 @@ if [ "$MYNAME" = "root" ]
 then
    : # dummy
 else
-   : # dummy
-   : # dummy
    echo "[ERROR] You must be root to run this script"
    exit 1
 fi
@@ -92,33 +90,19 @@ if [ "$JAILED" = "0" ]
 then
    : # dummy
 else
-   : # dummy
-   : # dummy
    echo "[ERROR] Run this script on the FreeBSD HOST"
    exit 1
 fi
-### stage4 // ###
-#
-### ### ### ### ### ### ### ### ###
-
 if [ "$FREENAS" = "1" ]
 then
-   : # dummy
-   : # dummy
    echo "[ERROR] FreeBSD only support"
    exit 1
 else
    : # dummy
 fi
-
-#CHECKPKGSCREEN=$(pkg info | grep -c "screen-")
-#if [ "$CHECKPKGSCREEN" = "0" ]
-#then
-#   : # dummy
-#   : # dummy
-#   echo "[ERROR] You need sysutils/screen"
-#   exit 1
-#fi
+### stage4 // ###
+#
+### ### ### ### ### ### ### ### ###
 
 
 
@@ -159,8 +143,6 @@ if [ "$MYNAME" = "root" ]
 then
    : # dummy
 else
-   : # dummy
-   : # dummy
    echo "[ERROR] You must be root to run this script"
    exit 1
 fi
@@ -168,23 +150,19 @@ if [ "$JAILED" = "0" ]
 then
    : # dummy
 else
-   : # dummy
-   : # dummy
    echo "[ERROR] Run this script on the FreeBSD HOST"
+   exit 1
+fi
+if [ "$FREENAS" = "1" ]
+then
+   : # dummy
+else
+   echo "[ERROR] FreeNAS only support"
    exit 1
 fi
 ### stage4 // ###
 #
 ### ### ### ### ### ### ### ### ###
-
-### FreeNAS // ###
-#
-if [ "$FREENAS" = "1" ]
-then
-   : # dummy
-fi
-#
-### // FreeNAS ###
 
 
 
