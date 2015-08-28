@@ -100,7 +100,7 @@ pkginstall(){
       fi
    else
       : # dummy
-      exit 0
+      #/ exit 0
    fi
 }
 #
