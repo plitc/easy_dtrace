@@ -89,7 +89,21 @@ pkginstall(){
          fi
       else
          portsnap fetch
+         if [ $? -eq 0 ]
+         then
+            : # dummy
+         else
+            echo "[ERROR] something goes wrong, can't install the package"
+            exit 1
+         fi
          portsnap update
+         if [ $? -eq 0 ]
+         then
+            : # dummy
+         else
+            echo "[ERROR] something goes wrong, can't install the package"
+            exit 1
+         fi
          GETPATH=$(find /usr/ports -maxdepth 2 -mindepth 2 -name "$@" | tail -n 1)
          cd "$GETPATH" && make install clean
          if [ $? -eq 0 ]
