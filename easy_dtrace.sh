@@ -157,6 +157,27 @@ fi
 #/ pkg install: DTraceToolkit
 (pkginstall DTraceToolkit) & spinner $!
 
+#/ DTrace & More Functions
+echo "" # dummy
+echo "Choose the (dtrace) function:"
+echo "1) test 1"
+echo "2) test 2"
+read FUNCTION;
+   if [ -z "$FUNCTION" ]; then
+      echo "[ERROR] nothing selected"
+      exit 1
+   fi
+case $FUNCTION in
+   1) echo "select: test 1"
+      : # dummy
+   ;;
+   2) echo "select: test 2"
+      : # dummy
+   ;;
+esac
+
+
+
 ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ###
