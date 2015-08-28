@@ -63,10 +63,24 @@ spinner()
    printf "    \b\b\b\b"
 }
 #
-#// function cleanup tmp
+#// function: cleanup tmp
 cleanup(){
    rm -rf /tmp/easy_dtrace*
 }
+#
+#// function: pkg installation
+pkginstall(){
+   CHECKPKG=$(pkg info | grep -c "$@")
+   if [ "$CHECKPKG" = "0" ]
+   then
+      : # dummy
+      echo yes
+   else
+      echo no
+      exit 0
+   fi
+}
+#
 ### // stage0 ###
 
 case "$1" in
@@ -104,7 +118,8 @@ fi
 #
 ### ### ### ### ### ### ### ### ###
 
-
+#/ pkg install: ksh93
+pkginstall ksh93
 
 ### ### ### ### ### ### ### ### ###
 cleanup
