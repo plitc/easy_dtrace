@@ -88,6 +88,8 @@ pkginstall(){
             exit 1
          fi
       else
+         portsnap fetch
+         portsnap update
          GETPATH=$(find /usr/ports -maxdepth 2 -mindepth 2 -name "$@" | tail -n 1)
          cd "$GETPATH" && make install clean
          if [ $? -eq 0 ]
