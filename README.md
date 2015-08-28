@@ -9,8 +9,8 @@ WARNING
 Dependencies
 ============
 * FreeBSD
-   * [racoon/ipsec-tools](https://www.freshports.org/security/ipsec-tools/)
-   * [openvpn](https://www.freshports.org/security/openvpn/)
+   * [shells/ksh93](https://www.freshports.org/shells/ksh93/)
+   * [sysutils/DTraceToolkit](https://www.freshports.org/sysutils/DTraceToolkit/)
 
 Features
 ========
