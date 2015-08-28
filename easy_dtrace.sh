@@ -74,9 +74,11 @@ pkginstall(){
    if [ "$CHECKPKG" = "0" ]
    then
       : # dummy
-      echo yes
-   else
       echo no
+      echo "$@"
+   else
+      echo yes
+      echo "$@"
       exit 0
    fi
 }
