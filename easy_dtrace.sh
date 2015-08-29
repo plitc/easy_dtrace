@@ -171,6 +171,7 @@ case $FUNCTION in
    1) echo "select: pmcstat -TS instructions"
       echo "" # dummy
       echo "INFO: "
+      echo "" # dummy
       sleep 2
       : # dummy
       CHECKHWPMC=$(kldstat | grep -c "hwpmc")
