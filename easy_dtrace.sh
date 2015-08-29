@@ -108,7 +108,6 @@ pkginstall(){
       fi
    else
       : # dummy
-      #/ exit 0
    fi
 }
 #
@@ -157,20 +156,40 @@ fi
 #/ pkg install: DTraceToolkit
 (pkginstall DTraceToolkit) & spinner $!
 
+#/ DTrace Kernel Support
+CHECKDTRACE=$(kldstat | grep -c "dtraceall")
+if [ "$CHECKDTRACE" = "0" ]
+then
+   kldload dtraceall
+fi
+
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1) pmcstat -TS instructions"
-echo "2) test 2"
+echo "1) pmcstat -TS instructions              |  #"
+echo "2) DTrace: Listing Probes                |  #"
+echo "3) DTrace: File Opens                    |  #"
+echo "4) DTrace: Syscall Counts By Process     |  #"
+echo "5) DTrace: Distribution of read() Bytes  |  #"
+echo "6) DTrace: Timing read() Syscall         |  #"
+echo "7) DTrace: Measuring CPU Time in read()  |  #"
+echo "8) DTrace: Count Process-Level Events    |  #"
+echo "9) DTrace: Profile On-CPU Kernel Stacks  |  #"
+echo "10) DTrace: Scheduler Tracing            |  #"
+echo "11) DTrace: TCP Inbound Connections      |  #"
+echo "12) DTrace: Raw Kernel Tracing           |  #"
+echo "" # dummy
+
 read FUNCTION;
-   if [ -z "$FUNCTION" ]; then
-      echo "[ERROR] nothing selected"
-      exit 1
-   fi
+if [ -z "$FUNCTION" ]; then
+   echo "[ERROR] nothing selected"
+   exit 1
+fi
+
 case $FUNCTION in
-   1) echo "select: pmcstat -TS instructions"
+   1) echo "(select) pmcstat -TS instructions"
       echo "" # dummy
-      echo "INFO: "
+      echo "(info) "
       echo "" # dummy
       sleep 2
       : # dummy
@@ -179,11 +198,109 @@ case $FUNCTION in
       then
          kldload hwpmc
       fi
-      #/ pmcstat -TS instructions -w 1
+      #/ RUN
       pmcstat -TS instructions -w 1
    ;;
-   2) echo "select: test 2"
+   2) echo "(select) DTrace: Listing Probes"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
       : # dummy
+      #/ RUN
+      dtrace -l | grep 'syscall.*read'
+   ;;
+   3) echo "(select) DTrace: File Opens"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
+   ;;
+   4) echo "(select) DTrace: Syscall Counts By Process"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall:::entry { @[execname, probefunc] = count(); }'
+   ;;
+   5) echo "(select) DTrace: Distribution of read() Bytes"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::read:return /execname == "sshd"/ { @ = quantize(arg0); }'
+   ;;
+   6) echo "(select) DTrace: Timing read() Syscall"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::read:entry { self->ts = timestamp; } syscall::read:return /self->ts/ {
+          @ = quantize(timestamp - self->ts); self->ts = 0; }'
+   ;;
+   7) echo "(select) DTrace: Measuring CPU Time in read()"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::read:entry { self->vts = vtimestamp; } syscall::read:return /self->vts/ {
+          @["On-CPU us:"] = lquantize((vtimestamp - self->vts) / 1000, 0, 10000, 10); self->vts = 0; }'
+   ;;
+   8) echo "(select) DTrace: Count Process-Level Events"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'proc::: { @[probename] = count(); } tick-5s { exit(0); }'
+   ;;
+   9) echo "(select) DTrace: Profile On-CPU Kernel Stacks"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -x stackframes=100 -n 'profile-99 /arg0/ { @[stack()] = count(); }'
+   ;;
+   10) echo "(select) DTrace: Scheduler Tracing"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'sched:::off-cpu { @[stack(8)] = count(); }'
+   ;;
+   11) echo "(select) DTrace: TCP Inbound Connections"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'tcp:::accept-established { @[args[3]->tcps_raddr] = count(); }'
+   ;;
+   12) echo "(select) DTrace: Raw Kernel Tracing"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'fbt::vmem_alloc:entry { @[curthread->td_name, args[0]->vm_name] = sum(arg1); }'
    ;;
 esac
 
