@@ -166,18 +166,18 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1) pmcstat -TS instructions              |  #"
-echo "2) DTrace: Listing Probes                |  #"
-echo "3) DTrace: File Opens                    |  #"
-echo "4) DTrace: Syscall Counts By Process     |  #"
-echo "5) DTrace: Distribution of read() Bytes  |  #"
-echo "6) DTrace: Timing read() Syscall         |  #"
-echo "7) DTrace: Measuring CPU Time in read()  |  #"
-echo "8) DTrace: Count Process-Level Events    |  #"
-echo "9) DTrace: Profile On-CPU Kernel Stacks  |  #"
-echo "10) DTrace: Scheduler Tracing            |  #"
-echo "11) DTrace: TCP Inbound Connections      |  #"
-echo "12) DTrace: Raw Kernel Tracing           |  #"
+echo "1)  pmcstat -TS instructions              |  #"
+echo "2)  DTrace: Listing Probes                |  #"
+echo "3)  DTrace: File Opens                    |  #"
+echo "4)  DTrace: Syscall Counts By Process     |  #"
+echo "5)  DTrace: Distribution of read() Bytes  |  #"
+echo "6)  DTrace: Timing read() Syscall         |  #"
+echo "7)  DTrace: Measuring CPU Time in read()  |  #"
+echo "8)  DTrace: Count Process-Level Events    |  #"
+echo "9)  DTrace: Profile On-CPU Kernel Stacks  |  #"
+echo "10) DTrace: Scheduler Tracing             |  #"
+echo "11) DTrace: TCP Inbound Connections       |  #"
+echo "12) DTrace: Raw Kernel Tracing            |  #"
 echo "" # dummy
 
 read FUNCTION;
@@ -190,6 +190,8 @@ case $FUNCTION in
    1) echo "(select) pmcstat -TS instructions"
       echo "" # dummy
       echo "(info) "
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -205,6 +207,8 @@ case $FUNCTION in
       echo "" # dummy
       echo "(info) "
       echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
       sleep 2
       : # dummy
       #/ RUN
@@ -214,6 +218,8 @@ case $FUNCTION in
       echo "" # dummy
       echo "(info) "
       echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
       sleep 2
       : # dummy
       #/ RUN
@@ -221,7 +227,9 @@ case $FUNCTION in
    ;;
    4) echo "(select) DTrace: Syscall Counts By Process"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -230,7 +238,9 @@ case $FUNCTION in
    ;;
    5) echo "(select) DTrace: Distribution of read() Bytes"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -239,7 +249,9 @@ case $FUNCTION in
    ;;
    6) echo "(select) DTrace: Timing read() Syscall"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -249,7 +261,9 @@ case $FUNCTION in
    ;;
    7) echo "(select) DTrace: Measuring CPU Time in read()"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -261,6 +275,8 @@ case $FUNCTION in
       echo "" # dummy
       echo "(info) "
       echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
       sleep 2
       : # dummy
       #/ RUN
@@ -268,7 +284,9 @@ case $FUNCTION in
    ;;
    9) echo "(select) DTrace: Profile On-CPU Kernel Stacks"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -277,7 +295,9 @@ case $FUNCTION in
    ;;
    10) echo "(select) DTrace: Scheduler Tracing"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -286,7 +306,9 @@ case $FUNCTION in
    ;;
    11) echo "(select) DTrace: TCP Inbound Connections"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
@@ -295,7 +317,9 @@ case $FUNCTION in
    ;;
    12) echo "(select) DTrace: Raw Kernel Tracing"
       echo "" # dummy
-      echo "(info) "
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
       echo "" # dummy
       sleep 2
       : # dummy
