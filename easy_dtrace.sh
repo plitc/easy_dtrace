@@ -160,7 +160,7 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1) test 1"
+echo "1) pmcstat -TS instructions"
 echo "2) test 2"
 read FUNCTION;
    if [ -z "$FUNCTION" ]; then
@@ -168,8 +168,18 @@ read FUNCTION;
       exit 1
    fi
 case $FUNCTION in
-   1) echo "select: test 1"
+   1) echo "select: pmcstat -TS instructions"
+      echo "" # dummy
+      echo "INFO: "
+      sleep 2
       : # dummy
+      CHECKHWPMC=$(kldstat | grep -c "hwpmc")
+      if [ "$CHECKHWPMC" = "0" ]
+      then
+         kldload hwpmc
+      fi
+      #/ pmcstat -TS instructions -w 1
+      pmcstat -TS instructions -w 1
    ;;
    2) echo "select: test 2"
       : # dummy
