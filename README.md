@@ -47,7 +47,22 @@ Platform
 Usage
 =====
 ```
-    # ./easy_dtrace.sh
+    # ./easy_dtrace.sh freebsd
+
+Choose the (dtrace) function:
+1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #
+2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk           |  #
+3)  DTrace: File Opens                    |  #
+4)  DTrace: Syscall Counts By Process     |  #
+5)  DTrace: Distribution of read() Bytes  |  #
+6)  DTrace: Timing read() Syscall         |  #
+7)  DTrace: Measuring CPU Time in read()  |  #
+8)  DTrace: Count Process-Level Events    |  #
+9)  DTrace: Profile On-CPU Kernel Stacks  |  #
+10) DTrace: Scheduler Tracing             |  #
+11) DTrace: TCP Inbound Connections       |  #
+12) DTrace: Raw Kernel Tracing            |  #
+
 ```
 
 Screencast
