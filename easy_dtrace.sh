@@ -212,7 +212,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (dtrace -l | grep 'syscall.*read') & spinner $!
+      dtrace -l | grep 'syscall.*read'
    ;;
    3) echo "(select) DTrace: File Opens"
       echo "" # dummy
@@ -280,7 +280,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (dtrace -n 'proc::: { @[probename] = count(); } tick-5s { exit(0); }') & spinner $!
+      dtrace -n 'proc::: { @[probename] = count(); } tick-5s { exit(0); }'
    ;;
    9) echo "(select) DTrace: Profile On-CPU Kernel Stacks"
       echo "" # dummy
