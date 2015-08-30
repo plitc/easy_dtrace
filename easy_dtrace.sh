@@ -244,8 +244,15 @@ case $FUNCTION in
       echo "" # dummy
       sleep 2
       : # dummy
+      echo "Please enter the process name:"
+      read PROCESSNAME;
+      if [ -z "$PROCESSNAME" ]
+      then
+         echo "[ERROR] empty name"
+         exit 1
+      fi
       #/ RUN
-      dtrace -n 'syscall::read:return /execname == "sshd"/ { @ = quantize(arg0); }'
+      dtrace -n 'syscall::read:return /execname == "$PROCESSNAME"/ { @ = quantize(arg0); }'
    ;;
    6) echo "(select) DTrace: Timing read() Syscall"
       echo "" # dummy
