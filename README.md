@@ -34,6 +34,7 @@ Features
   * DTrace: TCP Inbound Connections
   * DTrace: Raw Kernel Tracing
   * DTraceTool: errinfo
+  * DTraceTool: cpu/cpuwalk
 
 * FreeNAS
   * #

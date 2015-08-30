@@ -167,7 +167,7 @@ fi
 echo "" # dummy
 echo "Choose the (dtrace) function:"
 echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #"
-echo "2)  DTrace: Listing Probes                |  #"
+echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk           |  #"
 echo "3)  DTrace: File Opens                    |  #"
 echo "4)  DTrace: Syscall Counts By Process     |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
@@ -227,7 +227,7 @@ case $FUNCTION in
    ;;
    4) echo "(select) DTrace: Syscall Counts By Process"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -238,7 +238,7 @@ case $FUNCTION in
    ;;
    5) echo "(select) DTrace: Distribution of read() Bytes"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -249,7 +249,7 @@ case $FUNCTION in
    ;;
    6) echo "(select) DTrace: Timing read() Syscall"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -261,7 +261,7 @@ case $FUNCTION in
    ;;
    7) echo "(select) DTrace: Measuring CPU Time in read()"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -284,7 +284,7 @@ case $FUNCTION in
    ;;
    9) echo "(select) DTrace: Profile On-CPU Kernel Stacks"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -295,7 +295,7 @@ case $FUNCTION in
    ;;
    10) echo "(select) DTrace: Scheduler Tracing"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -306,7 +306,7 @@ case $FUNCTION in
    ;;
    11) echo "(select) DTrace: TCP Inbound Connections"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -317,7 +317,7 @@ case $FUNCTION in
    ;;
    12) echo "(select) DTrace: Raw Kernel Tracing"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -328,7 +328,7 @@ case $FUNCTION in
    ;;
    13) echo "(select) DTraceTool: errinfo"
       echo "" # dummy
-      echo "(info) press Ctrl + C to cancel"
+      echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
@@ -337,6 +337,17 @@ case $FUNCTION in
       #/ RUN
       /usr/local/share/DTraceToolkit/errinfo
    ;;
+   14) echo "(select) DTraceTool: cpu/cpuwalk"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d
+    ;;
 esac
 
 
