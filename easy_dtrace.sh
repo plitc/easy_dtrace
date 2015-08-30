@@ -212,7 +212,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -l | grep 'syscall.*read'
+      (dtrace -l | grep 'syscall.*read') & spinner $!
    ;;
    3) echo "(select) DTrace: File Opens"
       echo "" # dummy
@@ -223,7 +223,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
+      (dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }') & spinner $!
    ;;
    4) echo "(select) DTrace: Syscall Counts By Process"
       echo "" # dummy
@@ -234,7 +234,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'syscall:::entry { @[execname, probefunc] = count(); }'
+      (dtrace -n 'syscall:::entry { @[execname, probefunc] = count(); }') & spinner $!
    ;;
    5) echo "(select) DTrace: Distribution of read() Bytes"
       echo "" # dummy
@@ -245,7 +245,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'syscall::read:return /execname == "sshd"/ { @ = quantize(arg0); }'
+      (dtrace -n 'syscall::read:return /execname == "sshd"/ { @ = quantize(arg0); }') & spinner $!
    ;;
    6) echo "(select) DTrace: Timing read() Syscall"
       echo "" # dummy
@@ -256,8 +256,8 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'syscall::read:entry { self->ts = timestamp; } syscall::read:return /self->ts/ {
-          @ = quantize(timestamp - self->ts); self->ts = 0; }'
+      (dtrace -n 'syscall::read:entry { self->ts = timestamp; } syscall::read:return /self->ts/ {
+      @ = quantize(timestamp - self->ts); self->ts = 0; }') & spinner $!
    ;;
    7) echo "(select) DTrace: Measuring CPU Time in read()"
       echo "" # dummy
@@ -268,8 +268,8 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'syscall::read:entry { self->vts = vtimestamp; } syscall::read:return /self->vts/ {
-          @["On-CPU us:"] = lquantize((vtimestamp - self->vts) / 1000, 0, 10000, 10); self->vts = 0; }'
+      (dtrace -n 'syscall::read:entry { self->vts = vtimestamp; } syscall::read:return /self->vts/ {
+      @["On-CPU us:"] = lquantize((vtimestamp - self->vts) / 1000, 0, 10000, 10); self->vts = 0; }') & spinner $!
    ;;
    8) echo "(select) DTrace: Count Process-Level Events"
       echo "" # dummy
@@ -280,7 +280,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'proc::: { @[probename] = count(); } tick-5s { exit(0); }'
+      (dtrace -n 'proc::: { @[probename] = count(); } tick-5s { exit(0); }') & spinner $!
    ;;
    9) echo "(select) DTrace: Profile On-CPU Kernel Stacks"
       echo "" # dummy
@@ -291,7 +291,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -x stackframes=100 -n 'profile-99 /arg0/ { @[stack()] = count(); }'
+      (dtrace -x stackframes=100 -n 'profile-99 /arg0/ { @[stack()] = count(); }') & spinner $!
    ;;
    10) echo "(select) DTrace: Scheduler Tracing"
       echo "" # dummy
@@ -302,7 +302,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'sched:::off-cpu { @[stack(8)] = count(); }'
+      (dtrace -n 'sched:::off-cpu { @[stack(8)] = count(); }') & spinner $!
    ;;
    11) echo "(select) DTrace: TCP Inbound Connections"
       echo "" # dummy
@@ -313,7 +313,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'tcp:::accept-established { @[args[3]->tcps_raddr] = count(); }'
+      (dtrace -n 'tcp:::accept-established { @[args[3]->tcps_raddr] = count(); }') & spinner $!
    ;;
    12) echo "(select) DTrace: Raw Kernel Tracing"
       echo "" # dummy
@@ -324,7 +324,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      dtrace -n 'fbt::vmem_alloc:entry { @[curthread->td_name, args[0]->vm_name] = sum(arg1); }'
+      (dtrace -n 'fbt::vmem_alloc:entry { @[curthread->td_name, args[0]->vm_name] = sum(arg1); }') & spinner $!
    ;;
 esac
 
