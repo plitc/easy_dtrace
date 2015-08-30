@@ -33,7 +33,7 @@ Features
   * DTrace: Scheduler Tracing
   * DTrace: TCP Inbound Connections
   * DTrace: Raw Kernel Tracing
-  * DTrace: ###
+  * DTraceTool: errinfo
 
 * FreeNAS
   * #

@@ -166,7 +166,7 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)  pmcstat -TS instructions              |  #"
+echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #"
 echo "2)  DTrace: Listing Probes                |  #"
 echo "3)  DTrace: File Opens                    |  #"
 echo "4)  DTrace: Syscall Counts By Process     |  #"
@@ -325,6 +325,17 @@ case $FUNCTION in
       : # dummy
       #/ RUN
       dtrace -n 'fbt::vmem_alloc:entry { @[curthread->td_name, args[0]->vm_name] = sum(arg1); }'
+   ;;
+   13) echo "(select) DTraceTool: errinfo"
+      echo "" # dummy
+      echo "(info) press Ctrl + C to cancel"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      /usr/local/share/DTraceToolkit/errinfo
    ;;
 esac
 
