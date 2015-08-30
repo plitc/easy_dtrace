@@ -252,7 +252,7 @@ case $FUNCTION in
          exit 1
       fi
       #/ RUN
-      dtrace -n 'syscall::read:return /execname == "$PROCESSNAME"/ { @ = quantize(arg0); }'
+      dtrace -n 'syscall::read:return /execname == "'$PROCESSNAME'"/ { @ = quantize(arg0); }'
    ;;
    6) echo "(select) DTrace: Timing read() Syscall"
       echo "" # dummy
