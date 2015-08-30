@@ -223,7 +223,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }') & spinner $!
+      dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
    ;;
    4) echo "(select) DTrace: Syscall Counts By Process"
       echo "" # dummy
