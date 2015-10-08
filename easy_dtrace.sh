@@ -169,11 +169,16 @@ if [ -e "$ADIR"/tmp/FlameGraph ]
 then
    echo "--- update FlameGraph // --->"
    (cd "$ADIR"/tmp; git pull) & spinner $!
-   #/ echo "<--- // update FlameGraph ---"
 else
    echo "--- fetch FlameGraph // --->"
    (cd "$ADIR"/tmp; git clone https://github.com/brendangregg/FlameGraph.git) & spinner $!
-   #/ echo "<--- // fetch FlameGraph ---"
+   if [ $? -eq 0 ]
+   then
+      : # dummy
+   else
+      echo "[ERROR] can't fetch brendangregg/FlameGraph from github!"
+      exit 1
+   fi
 fi
 
 #/ DTrace & More Functions
