@@ -167,13 +167,13 @@ fi
 mkdir -p "$ADIR"/tmp
 if [ -e "$ADIR"/tmp/FlameGraph ]
 then
-   echo "--- update FlameGraph // ---"
-   (cd "$ADIR"/tmp; git pull) & spinner $!
-   echo "--- // update FlameGraph ---"
+   #/ echo "--- update FlameGraph // ---"
+   echo "--- update FlameGraph // ---" && (cd "$ADIR"/tmp; git pull) & spinner $!
+   #/ echo "--- // update FlameGraph ---"
 else
-   echo "--- fetch FlameGraph // ---"
-   (cd "$ADIR"/tmp; git clone https://github.com/brendangregg/FlameGraph.git) & spinner $!
-   echo "--- // fetch FlameGraph ---"
+   #/ echo "--- fetch FlameGraph // ---"
+   echo "--- fetch FlameGraph // ---" && (cd "$ADIR"/tmp; git clone https://github.com/brendangregg/FlameGraph.git) & spinner $!
+   #/ echo "--- // fetch FlameGraph ---"
 fi
 
 #/ DTrace & More Functions
