@@ -169,7 +169,7 @@ if [ -e "$ADIR"/tmp/FlameGraph ]
 then
    echo "OK"
 else
-   echo "Fail"
+   (cd "$ADIR"/tmp; git clone https://github.com/brendangregg/FlameGraph.git)
 fi
 
 #/ DTrace & More Functions
