@@ -186,7 +186,7 @@ echo "" # dummy
 echo "Choose the (dtrace) function:"
 echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #"
 echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk           |  #"
-echo "3)  DTrace: File Opens                    |  #"
+echo "3)  DTrace: File Opens                    15) FlameGraph                        |  #"
 echo "4)  DTrace: Syscall Counts By Process     |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
 echo "6)  DTrace: Timing read() Syscall         |  #"
