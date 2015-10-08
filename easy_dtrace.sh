@@ -165,6 +165,12 @@ fi
 
 #/ FlameGraph
 mkdir -p "$ADIR"/tmp
+if [ -e "$ADIR"/tmp/FlameGraph ]
+then
+   echo "OK"
+else
+   echo "Fail"
+fi
 
 #/ DTrace & More Functions
 echo "" # dummy
