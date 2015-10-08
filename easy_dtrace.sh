@@ -167,8 +167,10 @@ fi
 mkdir -p "$ADIR"/tmp
 if [ -e "$ADIR"/tmp/FlameGraph ]
 then
+   echo "--- update FlameGraph ---"
    (cd "$ADIR"/tmp; git pull)
 else
+   echo "--- fetch FlameGraph ---"
    (cd "$ADIR"/tmp; git clone https://github.com/brendangregg/FlameGraph.git)
 fi
 
