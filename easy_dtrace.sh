@@ -372,6 +372,7 @@ case $FUNCTION in
       : # dummy
       #/ RUN
       /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d
+   ;;
    15) echo "(select) FlameGraph"
       echo "" # dummy
       echo "(info) Hit Ctrl-C to end"
@@ -383,7 +384,7 @@ case $FUNCTION in
       #/ RUN
 
       ###
-    ;;
+   ;;
 esac
 
 
