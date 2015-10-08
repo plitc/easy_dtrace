@@ -186,7 +186,7 @@ echo "" # dummy
 echo "Choose the (dtrace) function:"
 echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #"
 echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk           |  #"
-echo "3)  DTrace: File Opens                    15) FlameGraph                        |  #"
+echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks         |  #"
 echo "4)  DTrace: Syscall Counts By Process     |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
 echo "6)  DTrace: Timing read() Syscall         |  #"
@@ -373,7 +373,7 @@ case $FUNCTION in
       #/ RUN
       /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d
    ;;
-   15) echo "(select) FlameGraph"
+   15) echo "(select) FlameGraph: DTrace stacks"
       echo "" # dummy
       echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
@@ -382,7 +382,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-
+      ("$ADIR"/tmp/FlameGraph/stackcollapse.pl out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       ###
    ;;
 esac
