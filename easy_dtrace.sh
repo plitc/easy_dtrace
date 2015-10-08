@@ -163,6 +163,9 @@ then
    kldload dtraceall
 fi
 
+#/ FlameGraph
+mkdir -p "$ADIR"/tmp
+
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
@@ -358,10 +361,6 @@ case $FUNCTION in
 esac
 
 
-
-echo "$ADIR"
-
-echo "$DIR"
 
 ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ###
