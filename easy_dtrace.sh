@@ -383,6 +383,7 @@ case $FUNCTION in
       : # dummy
       #/ RUN
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/stackcollapse.pl > "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
+      (chmod 0755 "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
       ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       ###
    ;;
