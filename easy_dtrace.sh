@@ -548,6 +548,7 @@ case $FUNCTION in
             CHECKHWPMC=$(kldstat | grep -c "hwpmc")
             if [ "$CHECKHWPMC" = "0" ]
             then
+               printf "\033[1;33m load hwpmc.ko!\033[0m\n"
                kldload "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko
             fi
          else
@@ -756,6 +757,7 @@ case $FUNCTION in
             CHECKHWPMC=$(kldstat | grep -c "hwpmc")
             if [ "$CHECKHWPMC" = "0" ]
             then
+               printf "\033[1;33m load hwpmc.ko!\033[0m\n"
                kldload "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko
             fi
          else
@@ -778,6 +780,8 @@ case $FUNCTION in
       CHECKHWPMC=$(kldstat | grep -c "hwpmc")
       if [ "$CHECKHWPMC" = "1" ]
       then
+         echo "" # dummy
+         printf "\033[1;33m unload hwpmc.ko!\033[0m\n"
          kldunload hwpmc.ko
       fi
    ;;
