@@ -389,8 +389,8 @@ case $FUNCTION in
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/kernel.svg) & spinner $!
-      echo 'look at "$ADIR"/tmp/kernel.svg'
-      ###
+      echo "" # dummy
+      printf "\033[1;33m look at "$ADIR"/tmp/kernel.svg\033[0m\n"
    ;;
 esac
 
