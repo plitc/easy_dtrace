@@ -406,13 +406,12 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o "$ADIR"/tmp/out.kern_stacks) & spinner $!
-      #/ (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl > "$ADIR"/tmp/FlameGraph/stackcollapse-pmc_freebsd.pl) & spinner $!
-      #/ (chmod 0755 "$ADIR"/tmp/FlameGraph/stackcollapse-pmc_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
+      (pmcstat -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
+      (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/pmc.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/pmc.svg) & spinner $!
       echo "" # dummy
       printf "\033[1;32m look at "$ADIR"/tmp/pmc.svg\033[0m\n"
    ;;
