@@ -184,10 +184,10 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                             |  #"
-echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                         |  #"
-echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds  |  #"
-echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks                   |  #"
+echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                                 |  #"
+echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                             |  #"
+echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds      |  #"
+echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks - capture 15 seconds  |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
 echo "6)  DTrace: Timing read() Syscall         |  #"
 echo "7)  DTrace: Measuring CPU Time in read()  |  #"
@@ -397,7 +397,7 @@ case $FUNCTION in
       echo "" # dummy
       printf "\033[1;32m look at "$ADIR"/tmp/kernel.svg\033[0m\n"
    ;;
-   16) echo "(select) FlameGraph: pmcstat -G stacks"
+   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 15 seconds"
       echo "" # dummy
       echo "(info) Hit Ctrl-C to abort"
       echo "" # dummy
@@ -406,7 +406,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (pmcstat -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
+      (pmcstat -l 15 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
       (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
       ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
