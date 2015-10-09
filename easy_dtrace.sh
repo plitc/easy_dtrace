@@ -562,6 +562,12 @@ case $FUNCTION in
       fi
       #/ RUN
       pmcstat -TS instructions -w 1
+      if [ "$CHECKHWPMC" = "1" ]
+      then
+         echo "" # dummy
+         printf "\033[1;33m unload hwpmc.ko!\033[0m\n"
+         kldunload hwpmc.ko
+      fi
    ;;
    2) echo "(select) DTrace: Listing Probes"
       echo "" # dummy
