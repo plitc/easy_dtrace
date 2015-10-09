@@ -482,6 +482,267 @@ fi
 ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ###
 
+#/ DTrace Kernel Support
+CHECKDTRACE=$(kldstat | grep -c "dtraceall")
+if [ "$CHECKDTRACE" = "0" ]
+then
+   kldload dtraceall
+fi
+
+#/ FlameGraph
+mkdir -p "$ADIR"/tmp
+if [ -e "$ADIR"/tmp/FlameGraph ]
+then
+   echo "--- update FlameGraph // --->"
+   (cd "$ADIR"/tmp; git pull) & spinner $!
+else
+   echo "--- fetch FlameGraph // --->"
+   (cd "$ADIR"/tmp; git clone https://github.com/brendangregg/FlameGraph.git) & spinner $!
+   if [ $? -eq 0 ]
+   then
+      : # dummy
+   else
+      echo "[ERROR] can't fetch brendangregg/FlameGraph from github!"
+      exit 1
+   fi
+fi
+
+#/ DTrace & More Functions
+echo "" # dummy
+echo "Choose the (dtrace) function:"
+echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                                 |  #"
+echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                             |  #"
+echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds      |  #"
+echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks - capture 60 seconds  |  #"
+echo "5)  DTrace: Distribution of read() Bytes  |  #"
+echo "6)  DTrace: Timing read() Syscall         |  #"
+echo "7)  DTrace: Measuring CPU Time in read()  |  #"
+echo "8)  DTrace: Count Process-Level Events    |  #"
+echo "9)  DTrace: Profile On-CPU Kernel Stacks  |  #"
+echo "10) DTrace: Scheduler Tracing             |  #"
+echo "11) DTrace: TCP Inbound Connections       |  #"
+echo "12) DTrace: Raw Kernel Tracing            |  #"
+echo "" # dummy
+
+read FUNCTION;
+if [ -z "$FUNCTION" ]; then
+   echo "[ERROR] nothing selected"
+   exit 1
+fi
+
+case $FUNCTION in
+   1) echo "(select) pmcstat -TS instructions"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      CHECKHWPMC=$(kldstat | grep -c "hwpmc")
+      if [ "$CHECKHWPMC" = "0" ]
+      then
+         kldload hwpmc
+      fi
+      #/ RUN
+      pmcstat -TS instructions -w 1
+   ;;
+   2) echo "(select) DTrace: Listing Probes"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -l | grep 'syscall.*read'
+   ;;
+   3) echo "(select) DTrace: File Opens"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
+   ;;
+   4) echo "(select) DTrace: Syscall Counts By Process"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall:::entry { @[execname, probefunc] = count(); }'
+   ;;
+   5) echo "(select) DTrace: Distribution of read() Bytes"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      echo "Please enter the process name:"
+      read PROCESSNAME;
+      if [ -z "$PROCESSNAME" ]
+      then
+         echo "[ERROR] empty name"
+         exit 1
+      fi
+      #/ RUN
+      dtrace -n 'syscall::read:return /execname == "'$PROCESSNAME'"/ { @ = quantize(arg0); }'
+   ;;
+   6) echo "(select) DTrace: Timing read() Syscall"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::read:entry { self->ts = timestamp; } syscall::read:return /self->ts/ {
+      @ = quantize(timestamp - self->ts); self->ts = 0; }'
+   ;;
+   7) echo "(select) DTrace: Measuring CPU Time in read()"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'syscall::read:entry { self->vts = vtimestamp; } syscall::read:return /self->vts/ {
+      @["On-CPU us:"] = lquantize((vtimestamp - self->vts) / 1000, 0, 10000, 10); self->vts = 0; }'
+   ;;
+   8) echo "(select) DTrace: Count Process-Level Events"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'proc::: { @[probename] = count(); } tick-5s { exit(0); }'
+   ;;
+   9) echo "(select) DTrace: Profile On-CPU Kernel Stacks"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -x stackframes=100 -n 'profile-99 /arg0/ { @[stack()] = count(); }'
+   ;;
+   10) echo "(select) DTrace: Scheduler Tracing"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'sched:::off-cpu { @[stack(8)] = count(); }'
+   ;;
+   11) echo "(select) DTrace: TCP Inbound Connections"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'tcp:::accept-established { @[args[3]->tcps_raddr] = count(); }'
+   ;;
+   12) echo "(select) DTrace: Raw Kernel Tracing"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      dtrace -n 'fbt::vmem_alloc:entry { @[curthread->td_name, args[0]->vm_name] = sum(arg1); }'
+   ;;
+   13) echo "(select) DTraceTool: errinfo"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/errinfo > /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
+      (chmod 0755 /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
+      /usr/local/share/DTraceToolkit/errinfo_freebsd
+   ;;
+   14) echo "(select) DTraceTool: cpu/cpuwalk"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to end"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d > /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
+      (chmod 0755 /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
+      /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd
+   ;;
+   15) echo "(select) FlameGraph: DTrace stacks - capture 60 seconds"
+      echo "" # dummy
+      echo "(info) Using DTrace to capture 60 seconds of kernel stacks at 997 Hertz"
+      echo "(info) Hit Ctrl-C to abort"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      (dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o "$ADIR"/tmp/out.kern_stacks) & spinner $!
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/stackcollapse.pl > "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
+      (chmod 0755 "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTNAME"_kernel.svg) & spinner $!
+      echo "" # dummy
+      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_kernel.svg\033[0m\n"
+   ;;
+   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to abort"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
+      (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
+      echo "" # dummy
+      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
+   ;;
+esac
+
 
 
 ### ### ### ### ### ### ### ### ###
