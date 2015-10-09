@@ -184,9 +184,9 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #"
-echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk           |  #"
-echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks         |  #"
+echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                             |  #"
+echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                         |  #"
+echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds  |  #"
 echo "4)  DTrace: Syscall Counts By Process     |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
 echo "6)  DTrace: Timing read() Syscall         |  #"
@@ -373,7 +373,7 @@ case $FUNCTION in
       #/ RUN
       /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d
    ;;
-   15) echo "(select) FlameGraph: DTrace stacks"
+   15) echo "(select) FlameGraph: DTrace stacks - capture 60 seconds"
       echo "" # dummy
       echo "(info) Hit Ctrl-C to end"
       echo "" # dummy
@@ -382,9 +382,10 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
+      (dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o "$ADIR"/tmp/out.kern_stacks) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/stackcollapse.pl > "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       ###
    ;;
 esac
