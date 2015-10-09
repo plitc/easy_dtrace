@@ -72,8 +72,8 @@ Usage
     # ./easy_dtrace.sh freebsd / freenas
 
 Choose the (dtrace) function:
-1)  pmcstat -TS instructions (load hwpmc.ko! for freenas)  13) DTraceTool: errinfo (not for freenas!)                                           |  #
-2)  DTrace: Listing Probes                                 14) DTraceTool: cpu/cpuwalk (not for freenas!)                                       |  #
+1)  pmcstat -TS instructions (load hwpmc.ko! for freenas)  13) DTraceTool: errinfo (NOT for freenas!)                                           |  #
+2)  DTrace: Listing Probes                                 14) DTraceTool: cpu/cpuwalk (NOT for freenas!)                                       |  #
 3)  DTrace: File Opens                                     15) FlameGraph: DTrace stacks - capture 60 seconds                                   |  #
 4)  DTrace: Syscall Counts By Process                      16) FlameGraph: pmcstat -G stacks - capture 60 seconds (load hwpmc.ko! for freenas)  |  #
 5)  DTrace: Distribution of read() Bytes                   |  #
