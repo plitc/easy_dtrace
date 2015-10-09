@@ -58,7 +58,8 @@ Features
   * FlameGraph: pmcstat -G stacks - capture 60 seconds (load hwpmc.ko!)
 
 * FreeNAS (9.3) Kernel Module
-  * hwpmc.ko (SHA256: 089f19141b1c95d9187e6f269b3508b749471fbad8781872de2733b7f238e372)
+  * hwpmc.ko
+    * (SHA256: 089f19141b1c95d9187e6f269b3508b749471fbad8781872de2733b7f238e372)
 
 Platform
 ========
