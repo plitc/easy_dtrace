@@ -550,6 +550,7 @@ case $FUNCTION in
             then
                printf "\033[1;33m load hwpmc.ko!\033[0m\n"
                kldload "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko
+               echo "" # dummy
             fi
          else
             echo "[ERROR] hwpmc.ko Kernel Module mismatch!"
