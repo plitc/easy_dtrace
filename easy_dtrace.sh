@@ -382,7 +382,8 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      ("$ADIR"/tmp/FlameGraph/stackcollapse.pl out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/stackcollapse.pl > "$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       ###
    ;;
 esac
