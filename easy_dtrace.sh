@@ -375,7 +375,8 @@ case $FUNCTION in
    ;;
    15) echo "(select) FlameGraph: DTrace stacks - capture 60 seconds"
       echo "" # dummy
-      echo "(info) Hit Ctrl-C to end"
+      echo "(info) Using DTrace to capture 60 seconds of kernel stacks at 997 Hertz"
+      echo "(info) Hit Ctrl-C to abort"
       echo "" # dummy
       echo "(starting)"
       echo "" # dummy
