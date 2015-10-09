@@ -187,7 +187,7 @@ echo "Choose the (dtrace) function:"
 echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                             |  #"
 echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                         |  #"
 echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds  |  #"
-echo "4)  DTrace: Syscall Counts By Process     |  #"
+echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks                   |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
 echo "6)  DTrace: Timing read() Syscall         |  #"
 echo "7)  DTrace: Measuring CPU Time in read()  |  #"
@@ -396,6 +396,25 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/kernel.svg) & spinner $!
       echo "" # dummy
       printf "\033[1;32m look at "$ADIR"/tmp/kernel.svg\033[0m\n"
+   ;;
+   16) echo "(select) FlameGraph: pmcstat -G stacks"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to abort"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
+      : # dummy
+      #/ RUN
+      (dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o "$ADIR"/tmp/out.kern_stacks) & spinner $!
+      #/ (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl > "$ADIR"/tmp/FlameGraph/stackcollapse-pmc_freebsd.pl) & spinner $!
+      #/ (chmod 0755 "$ADIR"/tmp/FlameGraph/stackcollapse-pmc_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/pmc.svg) & spinner $!
+      echo "" # dummy
+      printf "\033[1;32m look at "$ADIR"/tmp/pmc.svg\033[0m\n"
    ;;
 esac
 
