@@ -775,6 +775,11 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
       echo "" # dummy
       printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
+      CHECKHWPMC=$(kldstat | grep -c "hwpmc")
+      if [ "$CHECKHWPMC" = "1" ]
+      then
+         kldunload hwpmc.ko
+      fi
    ;;
 esac
 
