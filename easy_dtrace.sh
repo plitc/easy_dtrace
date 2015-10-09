@@ -510,18 +510,18 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)  ***                                   13) ***                                             |  #"
-echo "2)  DTrace: Listing Probes                14) ***                                             |  #"
-echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds  |  #"
-echo "4)  DTrace: Syscall Counts By Process     16) ***                                             |  #"
-echo "5)  DTrace: Distribution of read() Bytes  |  #"
-echo "6)  DTrace: Timing read() Syscall         |  #"
-echo "7)  DTrace: Measuring CPU Time in read()  |  #"
-echo "8)  DTrace: Count Process-Level Events    |  #"
-echo "9)  DTrace: Profile On-CPU Kernel Stacks  |  #"
-echo "10) DTrace: Scheduler Tracing             |  #"
-echo "11) DTrace: TCP Inbound Connections       |  #"
-echo "12) DTrace: Raw Kernel Tracing            |  #"
+echo "1)  pmcstat -TS instructions (load hwpmc.ko!)  13) ***                                             |  #"
+echo "2)  DTrace: Listing Probes                     14) ***                                             |  #"
+echo "3)  DTrace: File Opens                         15) FlameGraph: DTrace stacks - capture 60 seconds  |  #"
+echo "4)  DTrace: Syscall Counts By Process          16) ***                                             |  #"
+echo "5)  DTrace: Distribution of read() Bytes       |  #"
+echo "6)  DTrace: Timing read() Syscall              |  #"
+echo "7)  DTrace: Measuring CPU Time in read()       |  #"
+echo "8)  DTrace: Count Process-Level Events         |  #"
+echo "9)  DTrace: Profile On-CPU Kernel Stacks       |  #"
+echo "10) DTrace: Scheduler Tracing                  |  #"
+echo "11) DTrace: TCP Inbound Connections            |  #"
+echo "12) DTrace: Raw Kernel Tracing                 |  #"
 echo "" # dummy
 
 read FUNCTION;
@@ -531,22 +531,35 @@ if [ -z "$FUNCTION" ]; then
 fi
 
 case $FUNCTION in
-   1) #/ echo "(select) pmcstat -TS instructions"
-      #/ echo "" # dummy
-      #/ echo "(info) "
-      #/ echo "" # dummy
-      #/ echo "(starting)"
-      #/ echo "" # dummy
-      #/ sleep 2
-      #/ : # dummy
-      #/ CHECKHWPMC=$(kldstat | grep -c "hwpmc")
-      #/ if [ "$CHECKHWPMC" = "0" ]
-      #/ then
-      #/    kldload hwpmc
-      #/ fi
-      #/ RUN
-      #/ pmcstat -TS instructions -w 1
+   1) echo "(select) pmcstat -TS instructions"
+      echo "" # dummy
+      echo "(info) "
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
       : # dummy
+      CHECKFREENASVERSION=$(uname -a | grep -c "9.3")
+      if [ "$CHECKFREENASVERSION" = "1" ]
+      then
+         CHECKKERNELMHASH=$(sha256 -q "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko)
+         if [ "$CHECKKERNELMHASH" = "089f19141b1c95d9187e6f269b3508b749471fbad8781872de2733b7f238e372" ]
+         then
+            CHECKHWPMC=$(kldstat | grep -c "hwpmc")
+            if [ "$CHECKHWPMC" = "0" ]
+            then
+               kldload "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko
+            fi
+         else
+            echo "[ERROR] hwpmc.ko Kernel Module mismatch!"
+            exit 1
+         fi
+      else
+         echo "[ERROR] only for FreeNAS 9.3"
+         exit 1
+      fi
+      #/ RUN
+      pmcstat -TS instructions -w 1
    ;;
    2) echo "(select) DTrace: Listing Probes"
       echo "" # dummy
