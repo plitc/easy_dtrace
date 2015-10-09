@@ -21,8 +21,8 @@ Dependencies
 
 Features
 ========
-* FreeBSD
-  * pmcstat -TS instructions
+* FreeBSD / FreeNAS
+  * pmcstat -TS instructions --- (load hwpmc.ko! for FreeNAS)
   * DTrace: Listing Probes
   * DTrace: File Opens
   * DTrace: Syscall Counts By Process
@@ -34,28 +34,10 @@ Features
   * DTrace: Scheduler Tracing
   * DTrace: TCP Inbound Connections
   * DTrace: Raw Kernel Tracing
-  * DTraceTool: errinfo
-  * DTraceTool: cpu/cpuwalk
+  * DTraceTool: errinfo --- (NOT for FreeNAS!)
+  * DTraceTool: cpu/cpuwalk --- (NOT for FreeNAS!)
   * FlameGraph: DTrace stacks - capture 60 seconds
-  * FlameGraph: pmcstat -G stacks - capture 60 seconds
-
-* FreeNAS
-  * pmcstat -TS instructions (load hwpmc.ko!)
-  * DTrace: Listing Probes
-  * DTrace: File Opens
-  * DTrace: Syscall Counts By Process
-  * DTrace: Distribution of read() Bytes
-  * DTrace: Timing read() Syscall
-  * DTrace: Measuring CPU Time in read()
-  * DTrace: Count Process-Level Events
-  * DTrace: Profile On-CPU Kernel Stacks
-  * DTrace: Scheduler Tracing
-  * DTrace: TCP Inbound Connections
-  * DTrace: Raw Kernel Tracing
-  * ...
-  * ...
-  * FlameGraph: DTrace stacks - capture 60 seconds
-  * FlameGraph: pmcstat -G stacks - capture 60 seconds (load hwpmc.ko!)
+  * FlameGraph: pmcstat -G stacks - capture 60 seconds --- (load hwpmc.ko! for FreeNAS)
 
 * FreeNAS (9.3) Kernel Module
   * hwpmc.ko
@@ -72,10 +54,10 @@ Usage
     # ./easy_dtrace.sh freebsd / freenas
 
 Choose the (dtrace) function:
-1)  pmcstat -TS instructions (load hwpmc.ko! for freenas)  13) DTraceTool: errinfo (NOT for freenas!)                                           |  #
-2)  DTrace: Listing Probes                                 14) DTraceTool: cpu/cpuwalk (NOT for freenas!)                                       |  #
-3)  DTrace: File Opens                                     15) FlameGraph: DTrace stacks - capture 60 seconds                                   |  #
-4)  DTrace: Syscall Counts By Process                      16) FlameGraph: pmcstat -G stacks - capture 60 seconds (load hwpmc.ko! for freenas)  |  #
+1)  pmcstat -TS instructions                               13) DTraceTool: errinfo                                 |  #
+2)  DTrace: Listing Probes                                 14) DTraceTool: cpu/cpuwalk                             |  #
+3)  DTrace: File Opens                                     15) FlameGraph: DTrace stacks - capture 60 seconds      |  #
+4)  DTrace: Syscall Counts By Process                      16) FlameGraph: pmcstat -G stacks - capture 60 seconds  |  #
 5)  DTrace: Distribution of read() Bytes                   |  #
 6)  DTrace: Timing read() Syscall                          |  #
 7)  DTrace: Measuring CPU Time in read()                   |  #
