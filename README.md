@@ -37,6 +37,7 @@ Features
   * DTraceTool: errinfo
   * DTraceTool: cpu/cpuwalk
   * FlameGraph: DTrace stacks - capture 60 seconds
+  * FlameGraph: pmcstat -G stacks - capture 60 seconds
 
 * FreeNAS
   * ...
