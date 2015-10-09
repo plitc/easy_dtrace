@@ -510,8 +510,8 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)                                        13)                                                     |  #"
-echo "2)  DTrace: Listing Probes                14)                                                     |  #"
+echo "1)  ***                                   13) ***                                                 |  #"
+echo "2)  DTrace: Listing Probes                14) ***                                                 |  #"
 echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds      |  #"
 echo "4)  DTrace: Syscall Counts By Process     16)                                                     |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
