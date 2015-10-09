@@ -38,7 +38,7 @@ Features
   * FlameGraph: DTrace stacks - capture 60 seconds
 
 * FreeNAS
-  * #
+  * ...
 
 Platform
 ========
@@ -51,10 +51,10 @@ Usage
     # ./easy_dtrace.sh freebsd
 
 Choose the (dtrace) function:
-1)  pmcstat -TS instructions              13) DTraceTool: errinfo                             |  #
-2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                         |  #
-3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds  |  #
-4)  DTrace: Syscall Counts By Process     |  #
+1)  pmcstat -TS instructions              13) DTraceTool: errinfo                                 |  #
+2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                             |  #
+3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds      |  #
+4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks - capture 60 seconds  |  #
 5)  DTrace: Distribution of read() Bytes  |  #
 6)  DTrace: Timing read() Syscall         |  #
 7)  DTrace: Measuring CPU Time in read()  |  #

@@ -36,6 +36,7 @@ FREENAS=$(uname -a | grep -c "ixsystems.com")
 JAILED=$(sysctl -a | grep -c "security.jail.jailed: 1")
 MYNAME=$(whoami)
 DATE=$(date +%Y%m%d-%H%M)
+HOSTNAME=$(hostname)
 #
 PRG="$0"
 #// need this for relative symlinks
@@ -187,7 +188,7 @@ echo "Choose the (dtrace) function:"
 echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                                 |  #"
 echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                             |  #"
 echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds      |  #"
-echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks - capture 15 seconds  |  #"
+echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks - capture 60 seconds  |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
 echo "6)  DTrace: Timing read() Syscall         |  #"
 echo "7)  DTrace: Measuring CPU Time in read()  |  #"
@@ -393,11 +394,11 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/kernel.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTNAME"_kernel.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at "$ADIR"/tmp/kernel.svg\033[0m\n"
+      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_kernel.svg\033[0m\n"
    ;;
-   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 15 seconds"
+   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
       echo "" # dummy
       echo "(info) Hit Ctrl-C to abort"
       echo "" # dummy
@@ -406,14 +407,14 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (pmcstat -l 15 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
+      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
       (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
       ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/pmc.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at "$ADIR"/tmp/pmc.svg\033[0m\n"
+      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
    ;;
 esac
 
