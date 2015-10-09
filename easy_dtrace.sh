@@ -360,7 +360,9 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      /usr/local/share/DTraceToolkit/errinfo
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/errinfo > /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
+      (chmod 0755 /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
+      /usr/local/share/DTraceToolkit/errinfo_freebsd
    ;;
    14) echo "(select) DTraceTool: cpu/cpuwalk"
       echo "" # dummy
@@ -371,7 +373,9 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d > /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
+      (chmod 0755 /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
+      /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd
    ;;
    15) echo "(select) FlameGraph: DTrace stacks - capture 60 seconds"
       echo "" # dummy
