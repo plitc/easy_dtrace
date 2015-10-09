@@ -510,8 +510,8 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)  pmcstat -TS instructions              13) DTraceTool: errinfo                                 |  #"
-echo "2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                             |  #"
+echo "1)  --- --- --- --- --- --- --- --- ---   13) --- --- --- --- --- --- --- --- ---                 |  #"
+echo "2)  DTrace: Listing Probes                14) --- --- --- --- --- --- --- --- ---                 |  #"
 echo "3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds      |  #"
 echo "4)  DTrace: Syscall Counts By Process     16) FlameGraph: pmcstat -G stacks - capture 60 seconds  |  #"
 echo "5)  DTrace: Distribution of read() Bytes  |  #"
@@ -531,21 +531,22 @@ if [ -z "$FUNCTION" ]; then
 fi
 
 case $FUNCTION in
-   1) echo "(select) pmcstat -TS instructions"
-      echo "" # dummy
-      echo "(info) "
-      echo "" # dummy
-      echo "(starting)"
-      echo "" # dummy
-      sleep 2
-      : # dummy
-      CHECKHWPMC=$(kldstat | grep -c "hwpmc")
-      if [ "$CHECKHWPMC" = "0" ]
-      then
-         kldload hwpmc
-      fi
+   1) #/ echo "(select) pmcstat -TS instructions"
+      #/ echo "" # dummy
+      #/ echo "(info) "
+      #/ echo "" # dummy
+      #/ echo "(starting)"
+      #/ echo "" # dummy
+      #/ sleep 2
+      #/ : # dummy
+      #/ CHECKHWPMC=$(kldstat | grep -c "hwpmc")
+      #/ if [ "$CHECKHWPMC" = "0" ]
+      #/ then
+      #/    kldload hwpmc
+      #/ fi
       #/ RUN
-      pmcstat -TS instructions -w 1
+      #/ pmcstat -TS instructions -w 1
+      : # dummy
    ;;
    2) echo "(select) DTrace: Listing Probes"
       echo "" # dummy
@@ -677,31 +678,33 @@ case $FUNCTION in
       #/ RUN
       dtrace -n 'fbt::vmem_alloc:entry { @[curthread->td_name, args[0]->vm_name] = sum(arg1); }'
    ;;
-   13) echo "(select) DTraceTool: errinfo"
-      echo "" # dummy
-      echo "(info) Hit Ctrl-C to end"
-      echo "" # dummy
-      echo "(starting)"
-      echo "" # dummy
-      sleep 2
+   13) #/ echo "(select) DTraceTool: errinfo"
+      #/ echo "" # dummy
+      #/ echo "(info) Hit Ctrl-C to end"
+      #/ echo "" # dummy
+      #/ echo "(starting)"
+      #/ echo "" # dummy
+      #/ sleep 2
+      #/ : # dummy
+      #/ #/ RUN
+      #/ (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/errinfo > /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
+      #/ (chmod 0755 /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
+      #/ /usr/local/share/DTraceToolkit/errinfo_freebsd
       : # dummy
-      #/ RUN
-      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/errinfo > /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
-      (chmod 0755 /usr/local/share/DTraceToolkit/errinfo_freebsd) & spinner $!
-      /usr/local/share/DTraceToolkit/errinfo_freebsd
    ;;
-   14) echo "(select) DTraceTool: cpu/cpuwalk"
-      echo "" # dummy
-      echo "(info) Hit Ctrl-C to end"
-      echo "" # dummy
-      echo "(starting)"
-      echo "" # dummy
-      sleep 2
+   14) #/ echo "(select) DTraceTool: cpu/cpuwalk"
+      #/ echo "" # dummy
+      #/ echo "(info) Hit Ctrl-C to end"
+      #/ echo "" # dummy
+      #/ echo "(starting)"
+      #/ echo "" # dummy
+      #/ sleep 2
+      #/ : # dummy
+      #/ #/ RUN
+      #/ (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d > /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
+      #/ (chmod 0755 /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
+      #/ /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd
       : # dummy
-      #/ RUN
-      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d > /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
-      (chmod 0755 /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd) & spinner $!
-      /usr/local/share/DTraceToolkit/Cpu/cpuwalk.d_freebsd
    ;;
    15) echo "(select) FlameGraph: DTrace stacks - capture 60 seconds"
       echo "" # dummy
