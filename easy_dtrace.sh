@@ -510,10 +510,10 @@ fi
 #/ DTrace & More Functions
 echo "" # dummy
 echo "Choose the (dtrace) function:"
-echo "1)  pmcstat -TS instructions (load hwpmc.ko!)  13) ***                                             |  #"
-echo "2)  DTrace: Listing Probes                     14) ***                                             |  #"
-echo "3)  DTrace: File Opens                         15) FlameGraph: DTrace stacks - capture 60 seconds  |  #"
-echo "4)  DTrace: Syscall Counts By Process          16) ***                                             |  #"
+echo "1)  pmcstat -TS instructions (load hwpmc.ko!)  13) ***                                                                  |  #"
+echo "2)  DTrace: Listing Probes                     14) ***                                                                  |  #"
+echo "3)  DTrace: File Opens                         15) FlameGraph: DTrace stacks - capture 60 seconds                       |  #"
+echo "4)  DTrace: Syscall Counts By Process          16) FlameGraph: pmcstat -G stacks - capture 60 seconds (load hwpmc.ko!)  |  #"
 echo "5)  DTrace: Distribution of read() Bytes       |  #"
 echo "6)  DTrace: Timing read() Syscall              |  #"
 echo "7)  DTrace: Measuring CPU Time in read()       |  #"
@@ -739,24 +739,42 @@ case $FUNCTION in
       echo "" # dummy
       printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_kernel.svg\033[0m\n"
    ;;
-  16) #/ echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
-      #/ echo "" # dummy
-      #/ echo "(info) Hit Ctrl-C to abort"
-      #/ echo "" # dummy
-      #/ echo "(starting)"
-      #/ echo "" # dummy
-      #/ sleep 2
-      #/ : # dummy
-      #/ #/ RUN
-      #/ (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
-      #/ (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
-      #/ ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
-      #/ (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      #/ (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      #/ ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
-      #/ echo "" # dummy
-      #/ printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
+  16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
+      echo "" # dummy
+      echo "(info) Hit Ctrl-C to abort"
+      echo "" # dummy
+      echo "(starting)"
+      echo "" # dummy
+      sleep 2
       : # dummy
+      CHECKFREENASVERSION=$(uname -a | grep -c "9.3")
+      if [ "$CHECKFREENASVERSION" = "1" ]
+      then
+         CHECKKERNELMHASH=$(sha256 -q "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko)
+         if [ "$CHECKKERNELMHASH" = "089f19141b1c95d9187e6f269b3508b749471fbad8781872de2733b7f238e372" ]
+         then
+            CHECKHWPMC=$(kldstat | grep -c "hwpmc")
+            if [ "$CHECKHWPMC" = "0" ]
+            then
+               kldload "$ADIR"/freenas_9.3p26_amd64/hwpmc.ko
+            fi
+         else
+            echo "[ERROR] hwpmc.ko Kernel Module mismatch!"
+            exit 1
+         fi
+      else
+         echo "[ERROR] only for FreeNAS 9.3"
+         exit 1
+      fi
+      #/ RUN
+      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
+      (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
+      (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
+      echo "" # dummy
+      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
    ;;
 esac
 
