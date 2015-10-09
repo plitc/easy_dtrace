@@ -15,6 +15,7 @@ WARNING
 Dependencies
 ============
 * FreeBSD
+   * [devel/git](https://www.freshports.org/devel/git/)
    * [shells/ksh93](https://www.freshports.org/shells/ksh93/)
    * [sysutils/DTraceToolkit](https://www.freshports.org/sysutils/DTraceToolkit/)
 
