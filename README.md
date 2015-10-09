@@ -35,6 +35,7 @@ Features
   * DTrace: Raw Kernel Tracing
   * DTraceTool: errinfo
   * DTraceTool: cpu/cpuwalk
+  * FlameGraph: DTrace stacks - capture 60 seconds
 
 * FreeNAS
   * #
@@ -50,9 +51,9 @@ Usage
     # ./easy_dtrace.sh freebsd
 
 Choose the (dtrace) function:
-1)  pmcstat -TS instructions              13) DTraceTool: errinfo               |  #
-2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk           |  #
-3)  DTrace: File Opens                    |  #
+1)  pmcstat -TS instructions              13) DTraceTool: errinfo                             |  #
+2)  DTrace: Listing Probes                14) DTraceTool: cpu/cpuwalk                         |  #
+3)  DTrace: File Opens                    15) FlameGraph: DTrace stacks - capture 60 seconds  |  #
 4)  DTrace: Syscall Counts By Process     |  #
 5)  DTrace: Distribution of read() Bytes  |  #
 6)  DTrace: Timing read() Syscall         |  #
