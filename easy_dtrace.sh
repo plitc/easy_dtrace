@@ -36,7 +36,7 @@ FREENAS=$(uname -a | grep -c "ixsystems.com")
 JAILED=$(sysctl -a | grep -c "security.jail.jailed: 1")
 MYNAME=$(whoami)
 DATE=$(date +%Y%m%d-%H%M)
-HOSTNAME=$(hostname)
+HOSTMACHINE=$(hostname)
 #
 PRG="$0"
 #// need this for relative symlinks
@@ -394,9 +394,9 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTNAME"_kernel.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTMACHINE"_kernel.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_kernel.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_kernel.svg\033[0m\n"
    ;;
   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
       echo "" # dummy
@@ -412,9 +412,9 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTMACHINE"_pmc.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_pmc.svg\033[0m\n"
    ;;
 esac
 
@@ -744,9 +744,9 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/stackcollapse_freebsd.pl "$ADIR"/tmp/out.kern_stacks > "$ADIR"/tmp/out.kern_folded) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTNAME"_kernel.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTMACHINE"_kernel.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_kernel.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_kernel.svg\033[0m\n"
    ;;
   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
       echo "" # dummy
@@ -783,9 +783,9 @@ case $FUNCTION in
       ("$ADIR"/tmp/FlameGraph/stackcollapse-pmc.pl "$ADIR"/tmp/pmc.graph > "$ADIR"/tmp/pmc.stack) & spinner $!
       (sed 's/\/usr\/bin\/perl/\/usr\/local\/bin\/perl/g' "$ADIR"/tmp/FlameGraph/flamegraph.pl > "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
-      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTNAME"_pmc.svg) & spinner $!
+      ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTMACHINE"_pmc.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at "$ADIR"/tmp/"$HOSTNAME"_pmc.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_pmc.svg\033[0m\n"
       CHECKHWPMC=$(kldstat | grep -c "hwpmc")
       if [ "$CHECKHWPMC" = "1" ]
       then
