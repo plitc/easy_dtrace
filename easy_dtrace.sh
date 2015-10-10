@@ -396,7 +396,7 @@ case $FUNCTION in
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTMACHINE"_kernel.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_kernel.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/%s_kernel.svg\033[0m\n" "$HOSTMACHINE"
    ;;
   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
       echo "" # dummy
@@ -414,7 +414,7 @@ case $FUNCTION in
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTMACHINE"_pmc.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_pmc.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/%s_pmc.svg\033[0m\n" "$HOSTMACHINE"
    ;;
 esac
 
@@ -746,7 +746,7 @@ case $FUNCTION in
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/out.kern_folded > "$ADIR"/tmp/"$HOSTMACHINE"_kernel.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_kernel.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/%s_kernel.svg\033[0m\n" "$HOSTMACHINE"
    ;;
   16) echo "(select) FlameGraph: pmcstat -G stacks - capture 60 seconds"
       echo "" # dummy
@@ -785,7 +785,7 @@ case $FUNCTION in
       (chmod 0755 "$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl) & spinner $!
       ("$ADIR"/tmp/FlameGraph/flamegraph_freebsd.pl "$ADIR"/tmp/pmc.stack > "$ADIR"/tmp/"$HOSTMACHINE"_pmc.svg) & spinner $!
       echo "" # dummy
-      printf "\033[1;32m look at $ADIR/tmp/$HOSTMACHINE_pmc.svg\033[0m\n"
+      printf "\033[1;32m look at $ADIR/tmp/%s_pmc.svg\033[0m\n" "$HOSTMACHINE"
       CHECKHWPMC=$(kldstat | grep -c "hwpmc")
       if [ "$CHECKHWPMC" = "1" ]
       then
