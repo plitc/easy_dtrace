@@ -199,7 +199,7 @@ echo "11) DTrace: TCP Inbound Connections       |  #"
 echo "12) DTrace: Raw Kernel Tracing            |  #"
 echo "" # dummy
 
-read FUNCTION;
+read -r FUNCTION;
 if [ -z "$FUNCTION" ]; then
    echo "[ERROR] nothing selected"
    exit 1
@@ -264,7 +264,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       echo "Please enter the process name:"
-      read PROCESSNAME;
+      read -r PROCESSNAME;
       if [ -z "$PROCESSNAME" ]
       then
          echo "[ERROR] empty name"
@@ -524,7 +524,7 @@ echo "11) DTrace: TCP Inbound Connections            |  #"
 echo "12) DTrace: Raw Kernel Tracing                 |  #"
 echo "" # dummy
 
-read FUNCTION;
+read -r FUNCTION;
 if [ -z "$FUNCTION" ]; then
    echo "[ERROR] nothing selected"
    exit 1
@@ -612,7 +612,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       echo "Please enter the process name:"
-      read PROCESSNAME;
+      read -r PROCESSNAME;
       if [ -z "$PROCESSNAME" ]
       then
          echo "[ERROR] empty name"
