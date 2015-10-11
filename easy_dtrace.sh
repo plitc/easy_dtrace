@@ -407,7 +407,7 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out) & spinner $!
+      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out; if [ $? -eq 0 ]; then echo ""; else echo "[ERROR] something goes wrong"; exit 1; fi) & spinner $!
       if [ $? -eq 0 ]
       then
          : # dummy
