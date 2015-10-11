@@ -85,7 +85,7 @@ pkginstall(){
          then
             : # dummy
          else
-            echo "[ERROR] something goes wrong, can't install the package"
+            echo "[ERROR] something went wrong, can't install the package"
             exit 1
          fi
       else
@@ -94,7 +94,7 @@ pkginstall(){
          then
             : # dummy
          else
-            echo "[ERROR] something goes wrong, can't install the package"
+            echo "[ERROR] something went wrong, can't install the package"
             exit 1
          fi
          GETPATH=$(find /usr/ports -maxdepth 2 -mindepth 2 -name "$@" | tail -n 1)
@@ -103,7 +103,7 @@ pkginstall(){
          then
             : # dummy
          else
-            echo "[ERROR] something goes wrong, can't install the package"
+            echo "[ERROR] something went wrong, can't install the package"
             exit 1
          fi
       fi
@@ -407,12 +407,12 @@ case $FUNCTION in
       sleep 2
       : # dummy
       #/ RUN
-      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out; if [ $? -eq 0 ]; then echo ""; else echo "[ERROR] something goes wrong"; exit 1; fi) & spinner $!
+      (pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out; if [ $? -eq 0 ]; then echo ""; else echo "[ERROR] something went wrong"; exit 77; fi) & spinner $!
       if [ $? -eq 0 ]
       then
          : # dummy
       else
-         echo "[ERROR] something goes wrong"
+         echo "[ERROR] something went wrong"
          exit 1
       fi
       (pmcstat -R "$ADIR"/tmp/pmc.out -z16 -G "$ADIR"/tmp/pmc.graph) & spinner $!
