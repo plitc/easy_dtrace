@@ -414,7 +414,7 @@ case $FUNCTION in
       #/    echo "[ERROR] something went wrong"
       #/    exit 1
       #/ fi
-      (sleep 60) & spinner $! & pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out
+      pmcstat -l 60 -S unhalted-cycles -O "$ADIR"/tmp/pmc.out & (sleep 60) & spinner $!
       if [ $? -eq 0 ]
       then
          : # dummy
